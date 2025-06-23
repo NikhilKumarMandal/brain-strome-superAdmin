@@ -3,6 +3,7 @@ import Root from "./Layouts/Root";
 import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./pages/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,12 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: <Dashboard />,
-        children: [],
+        children: [
+          {
+            path: "",
+            element: <DashboardPage />,
+          },
+        ],
       },
       {
         path: "/auth",

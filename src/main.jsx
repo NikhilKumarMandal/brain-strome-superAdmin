@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "sonner";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router";
+import "./App.css";
 
 const queryClinet = new QueryClient();
 

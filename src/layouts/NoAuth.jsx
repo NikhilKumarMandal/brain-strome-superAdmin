@@ -14,7 +14,7 @@ function NonAuth() {
 
   if (user !== null) {
     const returnTo =
-      new URLSearchParams(window.location.search).get("returnTo") || "/home";
+      new URLSearchParams(window.location.search).get("returnTo") || "/";
     return <Navigate to={returnTo} replace />;
   }
 

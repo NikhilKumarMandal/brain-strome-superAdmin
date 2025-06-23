@@ -1,6 +1,62 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { login, logout, self } from "../http/api";
+import { toast } from "sonner";
+import { usePermission } from "../hooks/usePermission";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../store/store";
+
+const loginUser = async (token) => {
+  const { data } = await login(token);
+  return data;
+};
+
+const getSelf = async () => {
+  const { data } = await self().then((res) => res.data);
+  return data;
+};
 function LoginCard() {
+  const { setUser, logout: logoutUserFromStore } = useAuthStore();
+  const { isAllowed } = usePermission();
+  console.log(isAllowed);
+
+  const { refetch } = useQuery({
+    queryKey: ["self"],
+    queryFn: getSelf,
+    enabled: false,
+  });
+
+  const { mutate: logoutMutate } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logout,
+    onSuccess: async () => {
+      logoutUserFromStore();
+      return;
+    },
+  });
+
+  const handleLoginSuccess = (credentialResponse) => {
+    const googleToken = credentialResponse.credential;
+    if (!googleToken) {
+      return toast.error("Google token not found!");
+    }
+    AuthLogin(googleToken);
+  };
+
+  const { mutate: AuthLogin } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: loginUser,
+    onSuccess: async () => {
+      const selfDataPromise = await refetch();
+      console.log(selfDataPromise, "Self");
+
+      if (!isAllowed(selfDataPromise.data)) {
+        logoutMutate();
+        return;
+      }
+      setUser(selfDataPromise.data);
+    },
+  });
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 backdrop-blur-sm">
@@ -14,7 +70,7 @@ function LoginCard() {
         <div className="space-y-6">
           <div className="flex justify-center">
             <GoogleLogin
-              //   onSuccess={handleLoginSuccess}
+              onSuccess={handleLoginSuccess}
               onError={() => toast.error("Google Login failed!")}
               theme="filled_black"
               size="large"
