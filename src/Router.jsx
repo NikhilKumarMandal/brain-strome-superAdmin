@@ -5,6 +5,7 @@ import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import DumpCSV from "./pages/DumpCSV";
+import StatsPage from "./pages/StatsPage";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <DashboardPage />,
+            element: <StatsPage />,
           },
           {
             path: "/dump-csv",
