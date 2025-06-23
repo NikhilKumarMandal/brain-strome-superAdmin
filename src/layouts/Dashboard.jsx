@@ -12,21 +12,16 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  Bell,
   CircleUser,
   Home,
   LineChart,
   Menu,
   Package,
   Package2,
-  Search,
   ShoppingCart,
   Users,
 } from "lucide-react";
@@ -69,7 +64,7 @@ export default function Dashboard() {
               </NavLink>
 
               <NavLink
-                to="/dashboard/books"
+                to="/dump-csv"
                 className={({ isActive }) => {
                   return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
                     isActive && "bg-muted"
@@ -77,7 +72,7 @@ export default function Dashboard() {
                 }}
               >
                 <Package className="h-4 w-4" />
-                choco{" "}
+                Dump Csv{" "}
               </NavLink>
             </nav>
           </div>
