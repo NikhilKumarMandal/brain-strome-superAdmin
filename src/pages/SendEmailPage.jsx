@@ -113,7 +113,7 @@ function SendEmailPage() {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-gradient-to-r bg-gray-600 text-white font-medium py-3 transition-all duration-200 transform hover:scale-[1.02] disabled:scale-100"
+                className="w-full bg-gradient-to-r bg-primary text-white font-medium py-3 transition-all duration-200 transform hover:scale-[1.02] disabled:scale-100"
               >
                 {isPending ? (
                   <div className="p-3 rounded-lg mb-2 flex gap-2 items-center">
