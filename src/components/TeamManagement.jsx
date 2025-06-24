@@ -10,131 +10,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
+import { disbandTeam } from "../http/api";
+import { useMutation } from "@tanstack/react-query";
+
+const disbandUserTeam = async (teamName) => {
+  const { data } = await disbandTeam(teamName);
+  return data;
+};
 
 const TeamManagement = () => {
-  const [teams, setTeams] = useState([
-    {
-      id: "1",
-      name: "Frontend Development Team",
-      description: "Responsible for UI/UX development and React applications",
-      size: 5,
-      maxSize: 8,
-      members: [
-        {
-          id: "1",
-          name: "John Doe",
-          email: "john@example.com",
-          role: "Lead Developer",
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          email: "jane@example.com",
-          role: "Developer",
-        },
-        {
-          id: "3",
-          name: "Bob Wilson",
-          email: "bob@example.com",
-          role: "Designer",
-        },
-      ],
-      createdDate: "2024-06-01",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Backend Development Team",
-      description: "API development and database management",
-      size: 4,
-      maxSize: 6,
-      members: [
-        {
-          id: "4",
-          name: "Alice Johnson",
-          email: "alice@example.com",
-          role: "Senior Developer",
-        },
-        {
-          id: "5",
-          name: "Charlie Brown",
-          email: "charlie@example.com",
-          role: "Developer",
-        },
-      ],
-      createdDate: "2024-05-15",
-      status: "active",
-    },
-  ]);
-
-  const [teamName, setTeamName] = useState("");
   const [disbandTeamName, setDisbandTeamName] = useState("");
 
-  const handleCreateTeam = () => {
-    if (!teamName.trim()) {
-      toast({
-        title: "Team Name Required",
-        description: "Please enter a team name.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const team = {
-      id: Date.now().toString(),
-      name: teamName,
-      description: `Team managed by admin`,
-      size: 0,
-      maxSize: 5,
-      members: [],
-      createdDate: new Date().toISOString().split("T")[0],
-      status: "active",
-    };
-
-    setTeams([...teams, team]);
-    setTeamName("");
-
-    toast({
-      title: "Team Created",
-      description: `Successfully created team: ${team.name}`,
-    });
-  };
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["team"],
+    mutationFn: disbandUserTeam,
+    onSuccess: () => {
+      toast.success("Team Disband");
+    },
+  });
 
   const handleDisbandTeam = () => {
-    if (!disbandTeamName.trim()) {
-      toast({
-        title: "Team Name Required",
-        description: "Please enter the team name to disband.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const team = teams.find(
-      (t) => t.name.toLowerCase() === disbandTeamName.toLowerCase()
-    );
-    if (!team) {
-      toast({
-        title: "Team Not Found",
-        description: "No team found with that name.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setTeams(teams.filter((t) => t.id !== team.id));
-    setDisbandTeamName("");
-
-    toast({
-      title: "Team Disbanded",
-      description: `Successfully disbanded team: ${team.name}`,
-    });
-  };
-
-  const getStatusColor = (status) => {
-    return status === "active"
-      ? "bg-green-100 text-green-800"
-      : "bg-gray-100 text-gray-800";
+    if (!disbandTeamName.trim()) return;
+    mutate(disbandTeamName);
   };
 
   return (
@@ -164,6 +61,7 @@ const TeamManagement = () => {
                   onClick={handleDisbandTeam}
                   variant="outline"
                   className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  disabled={isPending}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
                   Disband

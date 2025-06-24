@@ -30,3 +30,8 @@ export const fetchEmail = (filters) => {
 
 export const updateRole = (userId, role) =>
   api.patch("/superadmin/updateRole", { userId, role });
+
+export const disbandTeam = (teamName) =>
+  api.delete("/superadmin/disbandTeam", {
+    data: { teamName },
+  });
