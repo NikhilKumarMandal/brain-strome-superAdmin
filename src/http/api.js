@@ -10,3 +10,6 @@ export const logout = () => api.post("/auth/logout");
 // SuperAdmin Server
 
 export const stats = () => api.get("/superadmin/stats");
+
+export const sendMail = (subject, intro, outro) =>
+  api.post("/superadmin/sendBulkMail", { subject, intro, outro });
