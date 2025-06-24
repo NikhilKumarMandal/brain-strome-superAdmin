@@ -16,21 +16,21 @@ function ControlPage() {
           <TabsList className="grid w-full grid-cols-3 bg-white rounded-lg p-1 shadow-sm">
             <TabsTrigger 
               value="users" 
-              className="flex items-center space-x-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              className="flex items-center space-x-2 data-[state=active]:bg-primary data-[state=active]:text-white"
             >
               <Search className="h-4 w-4" />
               <span>User Management</span>
             </TabsTrigger>
             <TabsTrigger 
               value="teams"
-              className="flex items-center space-x-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              className="flex items-center space-x-2 data-[state=active]:bg-primary data-[state=active]:text-white"
             >
               <Users className="h-4 w-4" />
               <span>Team Management</span>
             </TabsTrigger>
             <TabsTrigger 
               value="courses"
-              className="flex items-center space-x-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              className="flex items-center space-x-2 data-[state=active]:bg-primary data-[state=active]:text-white"
             >
               <BookOpen className="h-4 w-4" />
               <span>Course Management</span>
