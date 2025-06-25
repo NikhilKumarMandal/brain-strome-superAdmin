@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { fetchEmail, updateRole } from "../http/api";
+import { banUser, fetchEmail, updateRole } from "../http/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
@@ -35,6 +35,11 @@ const LIMIT = 1;
 
 const updateUserRole = async ({ userId, role }) => {
   const { data } = await updateRole(userId, role);
+  return data;
+};
+
+const banUserOrUnBanUser = async ({ userId, ban }) => {
+  const { data } = await banUser(userId, ban);
   return data;
 };
 
@@ -75,6 +80,15 @@ const UserManagement = () => {
       return await fetchEmail({ queryParams: queryString, q }).then(
         (res) => res.data
       );
+    },
+  });
+
+  const { mutate: banOrUnban } = useMutation({
+    mutationKey: ["ban"],
+    mutationFn: banUserOrUnBanUser,
+    onSuccess: () => {
+      toast.success("User ban/unban status updated");
+      queryClient.invalidateQueries({ queryKey: ["fetchEmail"] });
     },
   });
 
@@ -168,6 +182,7 @@ const UserManagement = () => {
                   <TableHead>Name</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Actions</TableHead>
+                  <TableHead>Ban</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -203,7 +218,29 @@ const UserManagement = () => {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Select
+                          value={String(user.isBanned)}
+                          onValueChange={(newValue) => {
+                            banOrUnban({
+                              userId: user.id,
+                              ban: newValue === "true",
+                            });
+                          }}
+                        >
+                          <SelectTrigger className="w-24">
+                            <SelectValue
+                              placeholder={user.isBanned ? "BAN" : "UNBAN"}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="true">BAN</SelectItem>
+                            <SelectItem value="false">UNBAN</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <Button
                           size="sm"
                           variant="outline"

@@ -38,5 +38,8 @@ export const disbandTeam = (teamName) =>
 
 export const getAllCourses = () => api.get("/superadmin/courses");
 
+export const banUser = (userId, ban) =>
+  api.patch("/superadmin/banUser", { userId, ban });
+
 export const updateTeamSize = (courseId, newSize) =>
   api.patch("/superadmin/updateTeamSize", { courseId, newSize });
