@@ -38,6 +38,9 @@ export const disbandTeam = (teamName) =>
 
 export const getAllCourses = () => api.get("/superadmin/courses");
 
+export const getUserHistory = (userId) =>
+  api.get(`/superadmin/userHistory/${userId}`);
+
 export const banUser = (userId, ban) =>
   api.patch("/superadmin/banUser", { userId, ban });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, use } from "react";
 import { Search, History, Shield, User as UserIcon, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { banUser, fetchEmail, updateRole } from "../http/api";
+import { banUser, fetchEmail, getUserHistory, updateRole } from "../http/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
@@ -67,6 +67,13 @@ const UserManagement = () => {
       }, 500),
     []
   );
+
+  const { data: userHistoryData, isLoading: isHistoryLoading } = useQuery({
+    queryKey: ["userHistory", selectedUser?.id],
+    queryFn: () => getUserHistory(selectedUser.id).then((res) => res.data),
+    enabled: !!selectedUser,
+  });
+  console.log(userHistoryData?.data);
 
   const { data = [] } = useQuery({
     queryKey: ["fetchEmail", queryParams, q],
@@ -113,10 +120,6 @@ const UserManagement = () => {
   const handleShowHistory = (user) => {
     setSelectedUser(user);
     setShowHistory(true);
-    toast({
-      title: "User History Retrieved",
-      description: `Retrieved ${user.history?.length || 0} history entries for ${user.name}`,
-    });
   };
 
   const getRoleColor = (role) => {
@@ -271,19 +274,28 @@ const UserManagement = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {selectedUser.history?.map((item, index) => (
-                <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-medium text-sm">{item.action}</p>
-                      <p className="text-xs text-gray-600">{item.details}</p>
+            {isHistoryLoading?.data ? (
+              <p>Loading history...</p>
+            ) : userHistoryData?.data?.length > 0 ? (
+              <div className="space-y-3">
+                {userHistoryData?.data?.map((item, index) => (
+                  <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-sm">{item?.action}</p>
+                        <p className="text-xs text-gray-600">{item?.details}</p>
+                        <p className="text-xs text-gray-600">{item?.reason}</p>
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        {item?.date}
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-500">{item.date}</span>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p>No history found for this user.</p>
+            )}
           </CardContent>
         </Card>
       )}
