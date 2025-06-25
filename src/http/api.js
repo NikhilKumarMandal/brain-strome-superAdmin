@@ -46,3 +46,13 @@ export const banUser = (userId, ban) =>
 
 export const updateTeamSize = (courseId, newSize) =>
   api.patch("/superadmin/updateTeamSize", { courseId, newSize });
+
+export const dumpCSV = (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return api.post("/superadmin/upload-csv", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

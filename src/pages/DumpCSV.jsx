@@ -1,5 +1,12 @@
 import React, { useRef, useState } from "react";
 import { File, FileUp } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { dumpCSV } from "../http/api";
+
+const dumpUserCSV = async (file) => {
+  const { data } = await dumpCSV(file);
+  return data;
+};
 
 export default function DumpCSV() {
   const inputRef = useRef();
@@ -35,10 +42,22 @@ export default function DumpCSV() {
     e.stopPropagation();
   };
 
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["csv"],
+    mutationFn: dumpUserCSV,
+  });
+
   const handleFileInputChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    handleFileSelect(selectedFiles);
-    e.target.value = "";
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.name.endsWith(".csv")) {
+      alert("Only CSV files are allowed.");
+      return;
+    }
+
+    setFiles([file]);
+    mutate(file);
   };
 
   return (
@@ -50,14 +69,13 @@ export default function DumpCSV() {
         className="flex flex-col w-full max-w-2xl h-[60vh] justify-center items-center rounded-3xl border-2 border-dashed border-black bg-gray-100 p-6 sm:p-8 text-center cursor-pointer transition duration-300 ease-in-out gap-4"
       >
         <input
-          ref={inputRef}
           type="file"
+          ref={inputRef}
           accept=".csv"
-          multiple
           onChange={handleFileInputChange}
-          className="hidden"
+          className="mb-4"
         />
-
+        {isPending && <p>Uploading...</p>}
         <FileUp className="text-black w-16 h-16 sm:w-24 sm:h-24" />
         <h2 className="text-xl sm:text-3xl font-bold text-black">
           Upload CSV (Click or Drag & Drop)
