@@ -35,3 +35,8 @@ export const disbandTeam = (teamName) =>
   api.delete("/superadmin/disbandTeam", {
     data: { teamName },
   });
+
+export const getAllCourses = () => api.get("/superadmin/courses");
+
+export const updateTeamSize = (courseId, newSize) =>
+  api.patch("/superadmin/updateTeamSize", { courseId, newSize });

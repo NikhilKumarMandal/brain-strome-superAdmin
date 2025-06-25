@@ -26,6 +26,7 @@ const TeamManagement = () => {
     mutationFn: disbandUserTeam,
     onSuccess: () => {
       toast.success("Team Disband");
+      setDisbandTeamName("");
     },
   });
 
