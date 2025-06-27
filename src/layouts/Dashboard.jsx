@@ -15,6 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { logout } from "../http/api";
+import { useMutation } from "@tanstack/react-query";
 import {
   CircleUser,
   Home,
@@ -26,9 +28,19 @@ import {
   Users,
 } from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 export default function Dashboard() {
-  const { user } = useAuthStore();
+  const { user, logout: logoutUserFromStore } = useAuthStore();
   const location = useLocation();
+
+  const { mutate: logoutMutate } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logout,
+    onSuccess: async () => {
+      logoutUserFromStore();
+      toast("Logout");
+    },
+  });
 
   if (user === null) {
     return (
@@ -191,7 +203,14 @@ export default function Dashboard() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Button variant={"link"}>Logout</Button>
+                <Button
+                  onClick={() => {
+                    logoutMutate();
+                  }}
+                  variant={"link"}
+                >
+                  Logout
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
