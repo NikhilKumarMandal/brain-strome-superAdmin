@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useMemo, use } from "react";
-import { Search, History, Shield, User as UserIcon, Crown } from "lucide-react";
+import {
+  Search,
+  History,
+  Shield,
+  User as UserIcon,
+  Crown,
+  Activity,
+  Users,
+  MessageSquareX,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -30,6 +39,8 @@ import { banUser, fetchEmail, getUserHistory, updateRole } from "../http/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
+import { formateString } from "../utils/formatString";
+import { timeAgo } from "../utils/formatTime";
 
 const LIMIT = 1;
 
@@ -52,7 +63,7 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
   const queryClient = useQueryClient();
-
+  // const visibleLogs = userLogs?.slice(0, visibleLogsCount);
   useEffect(() => {
     setSearchEmail(q);
   }, [q]);
@@ -279,16 +290,35 @@ const UserManagement = () => {
             ) : userHistoryData?.data?.length > 0 ? (
               <div className="space-y-3">
                 {userHistoryData?.data?.map((item, index) => (
-                  <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-medium text-sm">{item?.action}</p>
-                        <p className="text-xs text-gray-600">{item?.details}</p>
-                        <p className="text-xs text-gray-600">{item?.reason}</p>
+                  <div key={index} className="relative">
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                          {selectIcon(item.action)}
+                        </div>
                       </div>
-                      <span className="text-xs text-gray-500">
-                        {item?.date}
-                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {formateString(item.action)}
+                          </h3>
+                          {item.timestamp && (
+                            <span className="text-sm text-gray-500 font-medium">
+                              {timeAgo(item.timestamp)}
+                            </span>
+                          )}
+                        </div>
+                        {item.teamName && (
+                          <p className="text-sm font-medium text-gray-600 mb-1">
+                            Team: {item.teamName}
+                          </p>
+                        )}
+                        {item.reason && (
+                          <p className="text-sm text-gray-700">
+                            Reason: {item.reason}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -302,5 +332,16 @@ const UserManagement = () => {
     </div>
   );
 };
+
+function selectIcon(action) {
+  switch (action) {
+    case "TEAM_CREATED":
+      return <Users className="h-4 w-4" />;
+    case "DISBAND_TEAM":
+      return <MessageSquareX className="h-4 w-4" />;
+    default:
+      return <Activity className="h-4 w-4" />;
+  }
+}
 
 export default UserManagement;
