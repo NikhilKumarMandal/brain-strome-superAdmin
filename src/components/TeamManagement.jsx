@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Users, Trash2 } from "lucide-react";
+import { Users, Trash2, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { disbandTeam } from "../http/api";
+import { disbandTeam, getTeamHistory } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
 
 const disbandUserTeam = async (teamName) => {
@@ -18,21 +18,51 @@ const disbandUserTeam = async (teamName) => {
   return data;
 };
 
+const getTeamHistoryDetails = async (teamName) => {
+  const { data } = await getTeamHistory(teamName);
+  return data;
+};
+
 const TeamManagement = () => {
   const [disbandTeamName, setDisbandTeamName] = useState("");
+  const [history, setHistory] = useState([]);
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["team"],
+    mutationKey: ["team-disband"],
     mutationFn: disbandUserTeam,
     onSuccess: () => {
-      toast.success("Team Disband");
+      toast.success("Team Disbanded");
       setDisbandTeamName("");
+    },
+    onError: () => {
+      toast.error("Failed to disband team");
+    },
+  });
+
+  const {
+    data,
+    mutate: historyMutate,
+    isPending: isHistoryLoading,
+  } = useMutation({
+    mutationKey: ["team-history"],
+    mutationFn: getTeamHistoryDetails,
+    onSuccess: (data) => {
+      setHistory(data?.data || []);
+      toast.success("Team history fetched");
+    },
+    onError: () => {
+      toast.error("Failed to fetch history");
     },
   });
 
   const handleDisbandTeam = () => {
     if (!disbandTeamName.trim()) return;
     mutate(disbandTeamName);
+  };
+
+  const handleGetHistory = () => {
+    if (!disbandTeamName.trim()) return;
+    historyMutate(disbandTeamName);
   };
 
   return (
@@ -56,7 +86,7 @@ const TeamManagement = () => {
                   placeholder="Enter team name to disband..."
                   value={disbandTeamName}
                   onChange={(e) => setDisbandTeamName(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleDisbandTeam()}
+                  onKeyDown={(e) => e.key === "Enter" && handleDisbandTeam()}
                 />
                 <Button
                   onClick={handleDisbandTeam}
@@ -67,9 +97,32 @@ const TeamManagement = () => {
                   <Trash2 className="h-4 w-4 mr-2" />
                   Disband
                 </Button>
+                <Button
+                  onClick={handleGetHistory}
+                  variant="outline"
+                  className="text-primary hover:bg-gray-100"
+                  disabled={isHistoryLoading}
+                >
+                  <History className="h-4 w-4 mr-1" />
+                  History
+                </Button>
               </div>
             </div>
           </div>
+
+          {history.length > 0 && (
+            <div className="pt-4 space-y-2">
+              <h2 className="text-lg font-semibold">Team History</h2>
+              <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                {history.map((item, index) => (
+                  <li key={index}>
+                    <strong>{item.action}</strong> - {item.reason} (
+                    {new Date(item.createdAt).toLocaleString()})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
