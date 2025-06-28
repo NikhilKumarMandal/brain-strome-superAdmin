@@ -12,6 +12,8 @@ import {
 import { toast } from "sonner";
 import { disbandTeam, getTeamHistory } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
+import { timeAgo } from "../utils/formatTime";
+import { formateString } from "../utils/formatString";
 
 const disbandUserTeam = async (teamName) => {
   const { data } = await disbandTeam(teamName);
@@ -113,11 +115,23 @@ const TeamManagement = () => {
           {history.length > 0 && (
             <div className="pt-4 space-y-2">
               <h2 className="text-lg font-semibold">Team History</h2>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+              <ul className="space-y-3 text-sm text-gray-700">
                 {history.map((item, index) => (
-                  <li key={index}>
-                    <strong>{item.action}</strong> - {item.reason} (
-                    {new Date(item.createdAt).toLocaleString()})
+                  <li key={index} className="border p-3 rounded-md shadow-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-blue-600">
+                        {formateString(item.action)}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {timeAgo(item.timestamp)}
+                      </span>
+                    </div>
+                    <div className="mt-1 text-gray-800">{item.message}</div>
+                    {item.reason && (
+                      <div className="mt-1 text-gray-500 text-sm italic">
+                        Reason: {item.reason}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
