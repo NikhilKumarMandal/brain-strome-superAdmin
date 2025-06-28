@@ -41,6 +41,9 @@ export const getAllCourses = () => api.get("/superadmin/courses");
 export const getTeamHistory = (teamName) =>
   api.post("/superadmin/teamHistory", { teamName });
 
+export const seeTeamMembers = (teamName) =>
+  api.post("/superadmin/teamMemeberDetail", { teamName });
+
 export const getUserHistory = (userId) =>
   api.get(`/superadmin/userHistory/${userId}`);
 
