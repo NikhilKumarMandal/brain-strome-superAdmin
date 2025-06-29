@@ -9,7 +9,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
-import { CircleUser, Home, Menu, Package, Package2 } from "lucide-react";
+import { CircleUser, Menu, Package2 ,ArrowDownToLine,Send,Joystick,ChartNoAxesCombined} from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 export default function Dashboard() {
@@ -54,7 +54,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <Home className="h-4 w-4" />
+                <ChartNoAxesCombined className="h-4 w-4"  />
                 Home
               </NavLink>
 
@@ -66,7 +66,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <Package className="h-4 w-4" />
+                <ArrowDownToLine className="h-4 w-4"  />
                 Dump Csv{" "}
               </NavLink>
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <Package className="h-4 w-4" />
+                <Send className="h-4 w-4"  />
                 Send Mail{" "}
               </NavLink>
 
@@ -90,7 +90,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <Package className="h-4 w-4" />
+                <Joystick className="h-4 w-4" />
                 Control{" "}
               </NavLink>
             </nav>
@@ -127,7 +127,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                  <Home className="h-4 w-4" />
+                   <ChartNoAxesCombined className="h-4 w-4"  />
                   Home
                 </NavLink>
                 <NavLink
@@ -138,7 +138,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                  <Package className="h-4 w-4" />
+               <ArrowDownToLine className="h-4 w-4"  />
                   Dump Csv{" "}
                 </NavLink>
                 <NavLink
@@ -149,7 +149,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                  <Package className="h-4 w-4" />
+                 <Send className="h-4 w-4"  />
                   Send Mail{" "}
                 </NavLink>
                 <NavLink
@@ -160,7 +160,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                  <Package className="h-4 w-4" />
+                  <Joystick className="h-4 w-4" />
                   Control{" "}
                 </NavLink>
               </nav>
