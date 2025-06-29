@@ -109,7 +109,7 @@ function StatsPage() {
               <Calendar className="h-5 w-5 text-red-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-slate-900">
+              <div className="text-1xl font-bold text-slate-900">
                 {statsData?.stats?.mostActiveUser.name}
               </div>
               <p className="text-xs text-slate-500 mt-1">
