@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "./layouts/Root";
-import NoAuth from "./Layouts/NoAuth";
-import Dashboard from "./Layouts/Dashboard";
+import NoAuth from "./layouts/NoAuth";
+import Dashboard from "./layouts/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import DumpCSV from "./pages/DumpCSV";
 import StatsPage from "./pages/StatsPage";
