@@ -1,9 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import Root from "./Layouts/Root";
+import Root from "./layouts/Root";
 import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
 import DumpCSV from "./pages/DumpCSV";
 import StatsPage from "./pages/StatsPage";
 import SendEmailPage from "./pages/SendEmailPage";
