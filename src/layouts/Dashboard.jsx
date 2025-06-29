@@ -9,7 +9,15 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
-import { CircleUser, Menu, Package2 ,ArrowDownToLine,Send,Joystick,ChartNoAxesCombined} from "lucide-react";
+import {
+  CircleUser,
+  Menu,
+  Package2,
+  ArrowDownToLine,
+  Send,
+  Joystick,
+  ChartNoAxesCombined,
+} from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 export default function Dashboard() {
@@ -54,7 +62,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <ChartNoAxesCombined className="h-4 w-4"  />
+                <ChartNoAxesCombined className="h-4 w-4" />
                 Home
               </NavLink>
 
@@ -66,7 +74,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <ArrowDownToLine className="h-4 w-4"  />
+                <ArrowDownToLine className="h-4 w-4" />
                 Dump Csv{" "}
               </NavLink>
 
@@ -78,7 +86,7 @@ export default function Dashboard() {
                   }`;
                 }}
               >
-                <Send className="h-4 w-4"  />
+                <Send className="h-4 w-4" />
                 Send Mail{" "}
               </NavLink>
 
@@ -117,7 +125,7 @@ export default function Dashboard() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
+                  <span className="sr-only">brain strom</span>
                 </Link>
                 <NavLink
                   to="/"
@@ -127,7 +135,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                   <ChartNoAxesCombined className="h-4 w-4"  />
+                  <ChartNoAxesCombined className="h-4 w-4" />
                   Home
                 </NavLink>
                 <NavLink
@@ -138,7 +146,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-               <ArrowDownToLine className="h-4 w-4"  />
+                  <ArrowDownToLine className="h-4 w-4" />
                   Dump Csv{" "}
                 </NavLink>
                 <NavLink
@@ -149,7 +157,7 @@ export default function Dashboard() {
                     }`;
                   }}
                 >
-                 <Send className="h-4 w-4"  />
+                  <Send className="h-4 w-4" />
                   Send Mail{" "}
                 </NavLink>
                 <NavLink
