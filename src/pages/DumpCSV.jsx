@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { File, FileUp } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { dumpCSV } from "../http/api";
+import { toast } from "sonner";
 
 const dumpUserCSV = async (file) => {
   const { data } = await dumpCSV(file);
@@ -45,6 +46,9 @@ export default function DumpCSV() {
   const { mutate, isPending } = useMutation({
     mutationKey: ["csv"],
     mutationFn: dumpUserCSV,
+    onSuccess: () => {
+      toast("File Upload successfully")
+    }
   });
 
   const handleFileInputChange = (e) => {
