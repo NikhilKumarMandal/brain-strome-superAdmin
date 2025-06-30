@@ -47,7 +47,7 @@ export default function DumpCSV() {
     mutationKey: ["csv"],
     mutationFn: dumpUserCSV,
     onSuccess: () => {
-      toast("File Upload successfully")
+      toast.success("File Upload successfully")
     }
   });
 
