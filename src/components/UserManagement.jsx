@@ -226,7 +226,6 @@ const UserManagement = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="USER">User</SelectItem>
-                            <SelectItem value="ADMIN">Admin</SelectItem>
                             <SelectItem value="SUPERADMIN">
                               Super Admin
                             </SelectItem>
@@ -247,9 +246,13 @@ const UserManagement = () => {
                         >
                           <SelectTrigger className="w-24">
                             <SelectValue
-                              placeholder={user.isBanned ? "BAN" : "UNBAN"}
-                            />
+                              placeholder="Select"
+                              defaultValue={String(user.isBanned)}
+                            >
+                              {user.isBanned ? "BAN" : "UNBAN"}
+                            </SelectValue>
                           </SelectTrigger>
+
                           <SelectContent>
                             <SelectItem value="true">BAN</SelectItem>
                             <SelectItem value="false">UNBAN</SelectItem>
