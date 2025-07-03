@@ -45,6 +45,14 @@ const CourseManagement = () => {
     onSuccess: () => {
       toast.success("Team Size Update");
     },
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleUpdateTeamSize = () => {

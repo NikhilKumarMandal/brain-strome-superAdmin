@@ -47,8 +47,16 @@ export default function DumpCSV() {
     mutationKey: ["csv"],
     mutationFn: dumpUserCSV,
     onSuccess: () => {
-      toast.success("File Upload successfully")
-    }
+      toast.success("File Upload successfully");
+    },
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleFileInputChange = (e) => {

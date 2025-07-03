@@ -28,7 +28,14 @@ function SendEmailPage() {
       setIntro("");
       setOutro("");
     },
-    onError: (err) => toast.error(err.message || "Something went wrong"),
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleSendMail = async (e) => {

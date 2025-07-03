@@ -42,8 +42,13 @@ const TeamManagement = () => {
       toast.success("Team Disbanded");
       setDisbandTeamName("");
     },
-    onError: () => {
-      toast.error("Failed to disband team");
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
@@ -54,8 +59,13 @@ const TeamManagement = () => {
       setHistory(data?.data || []);
       toast.success("Team history fetched");
     },
-    onError: () => {
-      toast.error("Failed to fetch history");
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
@@ -66,8 +76,13 @@ const TeamManagement = () => {
       setMembers(data?.data || []);
       toast.success("Team member fetched");
     },
-    onError: () => {
-      toast.error("Failed to fetch member");
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 

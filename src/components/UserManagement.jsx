@@ -108,6 +108,14 @@ const UserManagement = () => {
       toast.success("User ban/unban status updated");
       queryClient.invalidateQueries({ queryKey: ["fetchEmail"] });
     },
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const { mutate } = useMutation({
@@ -117,7 +125,14 @@ const UserManagement = () => {
       toast.success("Update user role!");
       queryClient.invalidateQueries({ queryKey: ["fetchEmail"] });
     },
-    onError: (err) => toast.error(err.message || "Something went wrong"),
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handlePromoteUser = (userId, newRole) => {
